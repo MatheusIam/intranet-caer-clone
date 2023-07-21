@@ -26,6 +26,24 @@ public class UsuarioService {
         
     }   
 
+    // Selecione um usuário do banco de dados com base no NOME
+    public Usuario achePorNome(String nome){
+        Usuario obj = null;
+        try {
+            List<Usuario> todos = acheTodos();
+            for (Usuario u : todos) {
+                if (u.getNome().equals(nome)){
+                    obj = u;
+                    return obj;
+                }
+            }
+            return obj;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     // seleciona todos os usuários presentes no banco de dados.
     public List<Usuario> acheTodos(){
         return repositorio.findAll();

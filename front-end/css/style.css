@@ -1,8 +1,13 @@
 .card {
     border-radius: 10px;
     border: dotted black;
-    width: 18em;
+    width: 25em;
     margin: auto;
     margin-top: 50px;
     padding: 50px;
+}
+
+.card-title {
+    text-align: center;
+    padding-top: 20px;
 }

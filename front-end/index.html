@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,14 +8,49 @@
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
     <div class="container-md">
 
-        <!-- CENTRALIZAR LOGIN -->
         <div class="card">
-            
+            <img src="img/logo-sm.png" class="card-img-top" style="width: 50%; height: 50%; align-self: center;">
+            <h2 class="card-title">INTRANET</h2>
+            <h5 class="card-text" style="text-align: center;">Bem vindo colaborador!</h5>
+            <br>
+            <h4 class="card-text" style="text-align: center;">Por favor, identifique-se</h4>
+            <form id="meu-form">
+                <label for="nome"></label>
+                <input type="text" id="nome" name="nome" placeholder="Usuário" style="width: 100%; padding: 10px;border-radius: 10px;">
+                <label for="senha"></label>
+                <input type="password" id="senha" name="senha" placeholder="Senha" style="width: 100%; padding: 10px;border-radius: 10px;"><br><br>
+
+                <button type="submit" style="width: 100%; background-color: aqua; border-radius: 10px;">Entrar</button>
+            </form>
+
         </div>
 
     </div>
+    <script>
+        document.querySelector("#meu-form").addEventListener('submit', function(evento) {
+            evento.preventDefault();
+
+            const usuario = document.getElementById('nome').value;
+            const senha = document.getElementById('senha').value;
+
+            if(usuario == "" || senha == "")
+                alert('Verifique se os campos usuario ou senha estao preenchidos')
+
+            fetch('http://127.0.0.1:8080/usuarios').then(response => response.json()).then(dados => {
+                dados.forEach(element => {
+                    if (element.nome == usuario && element.senha == senha){
+                        alert('Autenticado');
+                        location.assign('intranet.html');
+                    }
+                });
+            });
+
+        })
+    </script>
 </body>
+
 </html>

@@ -17,32 +17,45 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.matheus.intranetcaer.entities.Usuario;
 import com.matheus.intranetcaer.service.UsuarioService;
 
-
 @RestController
 @RequestMapping(value = "/usuario")
 public class UsuarioRC {
-    
+
     @Autowired
     private UsuarioService service;
 
-    @GetMapping(value = "/usuario/{id}")
-    public ResponseEntity<Usuario> obterUsuario(@PathVariable Integer id){
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Usuario> obterUsuario(@PathVariable Integer id) {
         Usuario obj = service.achePorId(id);
         return ResponseEntity.ok().body(obj);
+    }
+
+    @GetMapping(value = "/verificar")
+    public ResponseEntity<Usuario> verificaLogin(@RequestBody String nome) {
+
+        Usuario obj = service.achePorNome(nome);
+        System.out.println(obj);
+
+        if (obj != null){
+            System.out.println(obj.toString());
+            return ResponseEntity.ok().body(obj);
+        }
+
+        return ResponseEntity.notFound().build();
     }
 
     @PostMapping
     public ResponseEntity<Usuario> salvar(@RequestBody Usuario entity) {
         entity = service.salvar(entity);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(entity.getId()).toUri();
-		return ResponseEntity.created(uri).body(entity);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(entity.getId()).toUri();
+        return ResponseEntity.created(uri).body(entity);
     }
-    
+
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Usuario> deletar(@PathVariable Integer id){
-        
+    public ResponseEntity<Usuario> deletar(@PathVariable Integer id) {
+
         Boolean testa = service.apagar(id);
-        if (testa){
+        if (testa) {
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
@@ -50,8 +63,9 @@ public class UsuarioRC {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Usuario> alterar(@PathVariable Integer id, @RequestBody Usuario obj){
+    public ResponseEntity<Usuario> alterar(@PathVariable Integer id, @RequestBody Usuario obj) {
         service.alterar(id, obj);
         return ResponseEntity.ok().body(obj);
     }
+
 }
